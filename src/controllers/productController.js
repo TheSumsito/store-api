@@ -29,6 +29,11 @@ async function getProducts(req, res) {
           status: 200,
           response: listProducts,
         });
+      } else {
+        res.status(404).send({
+          status: 404,
+          response: 'Not found Products.',
+        });
       }
     }
   } catch (error) {
