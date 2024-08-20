@@ -19,7 +19,7 @@ async function getProducts(req, res) {
       } else {
         res.status(404).send({
           status: 404,
-          response: 'Not found product.',
+          response: 'Not found Product.',
         });
       }
     } else {
