@@ -5,15 +5,19 @@ async function getProducts(req, res) {
   try {
     if (Object.keys(req.body).length) {
       const { id } = req.body;
-      const getProduct = await prisma.products.findUnique({
+      const product = await prisma.products.findUnique({
         where: {
           id: id,
         }
       });
-      res.json(getProduct)
+      if (product) res.json(product);
+      else res.status(404).send({
+        status: 404,
+        message: 'Not found product.',
+      });
     } else {
-      const getProducts = await prisma.products.findMany();
-      res.json(getProducts)
+      const listProducts = await prisma.products.findMany();
+      res.json(listProducts)
     }
   } catch (error) {
     res.status(500).send({
