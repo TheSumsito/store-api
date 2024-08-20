@@ -1,5 +1,4 @@
 const { PrismaClient } = require('@prisma/client');
-const { response } = require('express');
 const prisma = new PrismaClient();
 
 async function getProducts(req, res) {
