@@ -8,13 +8,13 @@ async function getCategories(req, res) {
       const category = await prisma.categories.findUnique({
         where: {
           id: id,
-        }
+        },
       });
       if (category) res.json(category);
       else res.status(404).send({
         status: 404,
         message: 'Not found category.',
-      })
+      });
     } else {
       const listCategories = await prisma.categories.findMany();
       res.json(listCategories)

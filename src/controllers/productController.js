@@ -8,7 +8,7 @@ async function getProducts(req, res) {
       const product = await prisma.products.findUnique({
         where: {
           id: id,
-        }
+        },
       });
       if (product) res.json(product);
       else res.status(404).send({
