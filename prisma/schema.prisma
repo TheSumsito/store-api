@@ -17,7 +17,7 @@ model Categories {
   id  Int @id @default(autoincrement())
   description String
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @default(now())
   products Products[]
 }
 
@@ -29,5 +29,5 @@ model Products {
   categories Categories @relation(fields: [categories_id], references: [id])
   price Int
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @default(now())
 }

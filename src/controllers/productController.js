@@ -3,8 +3,18 @@ const prisma = new PrismaClient();
 
 async function getProducts(req, res) {
   try {
-    const getProducts = await prisma.products.findMany();
-    res.json(getProducts)
+    if (Object.keys(req.body).length) {
+      const { id } = req.body;
+      const getProduct = await prisma.products.findUnique({
+        where: {
+          id: id,
+        }
+      });
+      res.json(getProduct)
+    } else {
+      const getProducts = await prisma.products.findMany();
+      res.json(getProducts)
+    }
   } catch (error) {
     res.status(500).send({
       status: 500,
