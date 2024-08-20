@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const { response } = require('express');
 const prisma = new PrismaClient();
 
 async function getCategories(req, res) {
@@ -10,14 +11,30 @@ async function getCategories(req, res) {
           id: id,
         },
       });
-      if (category) res.json(category);
-      else res.status(404).send({
-        status: 404,
-        message: 'Not found category.',
-      });
+      if (category) {
+        res.status(200).send({
+          status: 200,
+          response: category,
+        });
+      } else {
+        res.status(404).send({
+          status: 404,
+          response: 'Not found category.',
+        });
+      }
     } else {
       const listCategories = await prisma.categories.findMany();
-      res.json(listCategories)
+      if (listCategories.length) {
+        res.status(200).send({
+          status: 200,
+          response: listCategories,
+        });
+      } else {
+        res.status(404).send({
+          status: 404,
+          response: 'Not found categories.',
+        });
+      }
     }
   } catch (error) {
     res.status(500).send({

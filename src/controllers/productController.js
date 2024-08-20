@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const { response } = require('express');
 const prisma = new PrismaClient();
 
 async function getProducts(req, res) {
@@ -10,14 +11,25 @@ async function getProducts(req, res) {
           id: id,
         },
       });
-      if (product) res.json(product);
-      else res.status(404).send({
-        status: 404,
-        message: 'Not found product.',
-      });
+      if (product) {
+        res.status(200).send({
+          status: 200,
+          response: product,
+        });
+      } else {
+        res.status(404).send({
+          status: 404,
+          response: 'Not found product.',
+        });
+      }
     } else {
       const listProducts = await prisma.products.findMany();
-      res.json(listProducts)
+      if (listProducts.length) {
+        res.status(200).send({
+          status: 200,
+          response: listProducts,
+        });
+      }
     }
   } catch (error) {
     res.status(500).send({
