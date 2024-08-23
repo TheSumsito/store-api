@@ -13,11 +13,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Users {
+  id Int @id @default(autoincrement())
+
+  assembled_computers assembled_computers[]
+}
+
 model Categories {
-  id  Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   description String
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+
   products Products[]
 }
 
@@ -26,8 +33,32 @@ model Products {
   title String
   image String?
   categories_id Int
-  categories Categories @relation(fields: [categories_id], references: [id])
   price Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+
+  categories Categories @relation(fields: [categories_id], references: [id])
+  assembled_products assembled_products[]
+}
+
+model assembled_products {
+  id Int @id @default(autoincrement())
+  product_id Int
+  assembled_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  products Products @relation(fields: [product_id], references: [id])
+  assembled_computers assembled_computers @relation(fields: [assembled_id], references: [id])
+}
+
+model assembled_computers {
+  id Int @id @default(autoincrement())
+  user_id Int
+  description String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  users Users @relation(fields: [user_id], references: [id])
+  assembled_products assembled_products[]
 }

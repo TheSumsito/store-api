@@ -10,36 +10,15 @@ async function getCategories(req, res) {
           id: id,
         },
       });
-      if (category) {
-        res.status(200).send({
-          status: 200,
-          response: category,
-        });
-      } else {
-        res.status(404).send({
-          status: 404,
-          response: 'Not found category.',
-        });
-      }
+      if (!category) res.status(404).send({status: 404, response: 'Not found category.'});
+      res.status(200).send({status: 200,response: category});
     } else {
       const listCategories = await prisma.categories.findMany();
-      if (listCategories.length) {
-        res.status(200).send({
-          status: 200,
-          response: listCategories,
-        });
-      } else {
-        res.status(404).send({
-          status: 404,
-          response: 'Not found categories.',
-        });
-      }
+      if (!listCategories.length) res.status(404).send({status: 404, response: 'Not found categories.'});
+      res.status(200).send({status: 200, response: listCategories});
     }
   } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: 'An error occurred while fetching categories.',
-    });
+    res.status(500).send({status: 500, message: 'An error occurred while fetching categories.'});
   } finally {
     await prisma.$disconnect();
   }

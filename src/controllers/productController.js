@@ -10,36 +10,15 @@ async function getProducts(req, res) {
           id: id,
         },
       });
-      if (product) {
-        res.status(200).send({
-          status: 200,
-          response: product,
-        });
-      } else {
-        res.status(404).send({
-          status: 404,
-          response: 'Not found Product.',
-        });
-      }
+      if (!product) res.status(404).send({status: 404, response: 'Not found Product.'});
+      res.status(200).send({status: 200, response: product});
     } else {
       const listProducts = await prisma.products.findMany();
-      if (listProducts.length) {
-        res.status(200).send({
-          status: 200,
-          response: listProducts,
-        });
-      } else {
-        res.status(404).send({
-          status: 404,
-          response: 'Not found Products.',
-        });
-      }
+      if (!listProducts.length) res.status(404).send({status: 404, response: 'Not found Products.'});
+      res.status(200).send({status: 200, response: listProducts});
     }
   } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: 'An error occurred while fetching products.',
-    });
+    res.status(500).send({status: 500, message: 'An error occurred while fetching products.'});
   } finally {
     await prisma.$disconnect();
   }
