@@ -9,20 +9,12 @@ async function myAssembled(req, res) {
         where: {
           user_id: user_id,
         },
-        select: {
-          description: true,
+        include: {
           assembled_products: {
-            select: {
+            include: {
               products: {
-                select: {
-                  id: true,
-                  title: true,
-                  price: true,
-                  categories: {
-                    select: {
-                      description: true,
-                    }
-                  }
+                include: {
+                  categories: true,
                 },
               },
             },
