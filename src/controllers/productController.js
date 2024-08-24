@@ -24,15 +24,15 @@ async function getProducts(req, res) {
 };
 
 function formatResponse(response) {
-  return response.map(prod => {
+  return response.map(item => {
     return {
-      id: prod.id,
-      title: prod.title.toLowerCase(),
-      image: prod.image,
-      price: prod.price,
+      id: item.id,
+      name: item.title.toLowerCase(),
+      image: item.image,
+      price: item.price,
       category: {
-        id: prod.categories.id,
-        name: prod.categories.description,
+        id: item.categories.id,
+        name: item.categories.description,
       },
     };
   })
