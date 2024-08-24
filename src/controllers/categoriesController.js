@@ -15,7 +15,8 @@ async function getCategories(req, res) {
       status: 200,
       response: formatResponse(categories),
     });
-  } catch (error) {
+  } catch (e) {
+    console.error(e);
     return res.status(500).send({
       status: 500, 
       message: 'Internal server error.',
@@ -23,11 +24,11 @@ async function getCategories(req, res) {
   }
 };
 
-function formatResponse(response) {
-  return response.map(item => {
+function formatResponse(categories) {
+  return categories.map(cat => {
     return {
-      id: item.id,
-      name: item.description,
+      id: cat.id,
+      name: cat.description,
     };
   });
 };
