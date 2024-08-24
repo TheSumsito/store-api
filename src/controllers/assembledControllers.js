@@ -31,7 +31,7 @@ function formatResponse(response) {
       products: item.assembled_products.map(prod => {
         return {
           id: prod.products.id,
-          name: prod.products.title,
+          name: prod.products.title.toLowerCase(),
           price: prod.products.price,
           category: {
             id: prod.products.categories.id,
