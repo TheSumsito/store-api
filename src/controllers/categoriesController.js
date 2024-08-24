@@ -28,8 +28,8 @@ function formatResponse(response) {
     return {
       id: item.id,
       name: item.description,
-    }
-  })
+    };
+  });
 };
 
 module.exports = {

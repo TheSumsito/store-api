@@ -35,7 +35,7 @@ function formatResponse(response) {
         name: item.categories.description,
       },
     };
-  })
+  });
 };
 
 module.exports = {
