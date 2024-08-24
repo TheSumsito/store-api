@@ -31,11 +31,12 @@ function formatResponse(products) {
       title: prod_title,
       image: prod_image,
       price: prod_price,
+      catetories,
     } = prod;
     const {
       id: cat_id,
       description: cat_description,
-    } = prod.categories;
+    } = categories;
     
     return {
       id: prod_id,
