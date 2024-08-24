@@ -13,15 +13,18 @@ async function getProducts(req, res) {
   try {
     const products = await fetchProducts(req.body);
     if (!products.length) {
-      res.status(404).send({
+      return res.status(404).send({
         status: 404, 
         response: 'Not found Product.',
       });
     }
-    res.status(200).send({status: 200, response: products});
+    return res.status(200).send({status: 200, response: products});
   } catch (error) {
     console.error(error);
-    res.status(500).send({status: 500, message: 'An error occurred while fetching products.'});
+    return res.status(500).send({
+      status: 500, 
+      message: 'An error occurred while fetching products.',
+    });
   } finally {
     await prisma.$disconnect();
   }
