@@ -1,5 +1,5 @@
 const { 
-  fetchProducts 
+  fetchProducts,
 } = require('../prismaClient');
 
 async function getProducts(req, res) {
