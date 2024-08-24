@@ -15,7 +15,8 @@ async function myAssembled(req, res) {
       status: 200, 
       response: formatResponse(listAssembled),
     });
-  } catch (error) {
+  } catch (e) {
+    console.error(e);
     return res.status(500).send({
       status: 500, 
       message: 'Internal server error.',
