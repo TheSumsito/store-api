@@ -20,7 +20,7 @@ async function getProducts(req, res) {
     }
     res.status(200).send({status: 200, response: products});
   } catch (error) {
-    console.error(error)
+    console.error(error);
     res.status(500).send({status: 500, message: 'An error occurred while fetching products.'});
   } finally {
     await prisma.$disconnect();

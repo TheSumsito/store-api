@@ -31,7 +31,7 @@ async function myAssembled(req, res) {
     }
     res.status(200).send({status: 200, response: listAssembled});
   } catch (error) {
-    console.error(error)
+    console.error(error);
     res.status(500).send({status: 500, message: 'An error occurred while fetching assembled.'})
   } finally {
     await prisma.$disconnect();
