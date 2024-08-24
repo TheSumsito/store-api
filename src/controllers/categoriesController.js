@@ -1,22 +1,18 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+async function fetchCategories(payload={}) {
+  const query = {
+    where: payload
+  };
+  if (!Object.keys(payload).length) delete query.where;
+  return await prisma.categories.findMany(query);
+}
+
 async function getCategories(req, res) {
   try {
-    if (Object.keys(req.body).length) {
-      const { id } = req.body;
-      const category = await prisma.categories.findUnique({
-        where: {
-          id: id,
-        },
-      });
-      if (!category) res.status(404).send({status: 404, response: 'Not found category.'});
-      res.status(200).send({status: 200,response: category});
-    } else {
-      const listCategories = await prisma.categories.findMany();
-      if (!listCategories.length) res.status(404).send({status: 404, response: 'Not found categories.'});
-      res.status(200).send({status: 200, response: listCategories});
-    }
+    const categories = await fetchCategories(req.body);
+    res.status(200).send({status: 200,response: categories});
   } catch (error) {
     res.status(500).send({status: 500, message: 'An error occurred while fetching categories.'});
   } finally {
