@@ -20,6 +20,14 @@ async function fetchAssembled(payload={}) {
   return await prisma.assembled_computers.findMany(query);
 };
 
+async function fetchCategories(payload={}) {
+  const query = {
+    where: payload,
+  };
+  if (!Object.keys(payload).length) delete query.where;
+  return await prisma.categories.findMany(query);
+};
+
 module.exports = {
     fetchAssembled,
 };
