@@ -1,16 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
-async function fetchProducts(payload={}) {
-  const query = {
-    where: payload,
-    include: {
-      categories: true,
-    },
-  };
-  if (!Object.keys(payload).length) delete query.where;
-  return await prisma.products.findMany(query);
-};
+const { 
+  fetchProducts 
+} = require('../prismaClient');
 
 async function getProducts(req, res) {
   try {
