@@ -1,13 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
-async function fetchCategories(payload={}) {
-  const query = {
-    where: payload,
-  };
-  if (!Object.keys(payload).length) delete query.where;
-  return await prisma.categories.findMany(query);
-};
+const { 
+  fetchCategories,
+} = require('../prismaClient');
 
 async function getCategories(req, res) {
   try {
