@@ -1,33 +1,31 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-async function myAssembled(req, res) {
-  try {
-    if (Object.keys(req.body).length) {
-      const { user_id } = req.body;
-      const listAssembled = await prisma.assembled_computers.findMany({
-        where: {
-          user_id: user_id,
-        },
+async function fetchAssembled(payload={}) {
+  const query = {
+    where: payload,
+    include: {
+      assembled_products: {
         include: {
-          assembled_products: {
+          products: {
             include: {
-              products: {
-                include: {
-                  categories: true,
-                },
-              },
+              categories: true,
             },
           },
         },
-      });
+      },
+    },
+  };
+  if (!Object.keys(query).length) delete query.where;
+  return await prisma.assembled_computers.findMany(query);
+}
 
-      res.status(200).send({status: 200, response: listAssembled});
-    } else {
-      const listAssembled = await prisma.assembled_computers.findMany()
-      res.status(200).send({status: 200, response: listAssembled});
-    }
+async function myAssembled(req, res) {
+  try {
+    const listAssembled = await fetchAssembled(req.body);
+    res.status(200).send({status: 200, response: listAssembled});
   } catch (error) {
+    console.log(error)
     res.status(500).send({status: 500, message: 'An error occurred while fetching assembled.'})
   } finally {
     await prisma.$disconnect();
