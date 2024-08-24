@@ -15,7 +15,8 @@ async function getProducts(req, res) {
       status: 200, 
       response: formatResponse(products),
     });
-  } catch (error) {
+  } catch (e) {
+    console.error(e);
     return res.status(500).send({
       status: 500, 
       message: 'Internal server error.',
@@ -23,16 +24,27 @@ async function getProducts(req, res) {
   }
 };
 
-function formatResponse(response) {
-  return response.map(item => {
+function formatResponse(products) {
+  return products.map(prod => {
+    const {
+      id: prod_id,
+      title: prod_title,
+      image: prod_image,
+      price: prod_price,
+    } = prod;
+    const {
+      id: cat_id,
+      description: cat_description,
+    } = prod.categories;
+    
     return {
-      id: item.id,
-      name: item.title.toLowerCase(),
-      image: item.image,
-      price: item.price,
+      id: prod_id,
+      name: prod_title.toLowerCase(),
+      image: prod_image,
+      price: prod_price,
       category: {
-        id: item.categories.id,
-        name: item.categories.description,
+        id: cat_id,
+        name: cat_description,
       },
     };
   });
