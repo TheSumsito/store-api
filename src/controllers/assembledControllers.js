@@ -24,19 +24,37 @@ async function myAssembled(req, res) {
   }
 };
 
-function formatResponse(response) {
-  return response.map(item => {
+function formatResponse(assembled) {
+  return assembled.map(ass => {
+    const {
+      id: ass_id,
+      description: ass_title,
+      assembled_products: ass_products,
+    } = ass;
+    
     return {
-      id: item.id,
-      title: item.description,
-      products: item.assembled_products.map(prod => {
+      id: ass_id,
+      title: ass_title,
+      products: ass_products.map(prod => {
+        const { products } = prod;
+        const {
+          id: prod_id,
+          title: prod_title,
+          price: prod_price,
+          categories,
+        } = products;
+        const {
+          id: cat_id,
+          description: cat_name,
+        } = categories;
+        
         return {
-          id: prod.products.id,
-          name: prod.products.title.toLowerCase(),
-          price: prod.products.price,
+          id: prod_id,
+          name: prod_title.toLowerCase(),
+          price: prod_price,
           category: {
-            id: prod.products.categories.id,
-            name: prod.products.categories.description,
+            id: cat_id,
+            name: cat_name,
           },
         };
       }),
