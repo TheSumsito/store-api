@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 async function fetchProducts(payload={}) {
   const query = {
-    where: payload
+    where: payload,
   };
   if (!Object.keys(payload).length) delete query.where;
   return await prisma.products.findMany(query);
