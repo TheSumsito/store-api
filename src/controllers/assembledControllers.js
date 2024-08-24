@@ -13,13 +13,10 @@ async function myAssembled(req, res) {
     }
     return res.status(200).send({status: 200, response: listAssembled});
   } catch (error) {
-    console.error(error);
     return res.status(500).send({
       status: 500, 
-      message: 'An error occurred while fetching assembled.',
+      message: 'Internal server error.',
     })
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
