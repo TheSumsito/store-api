@@ -31,14 +31,13 @@ async function fetchCategories(payload={}) {
     };
     if (!Object.keys(payload).length) delete query.where;
     else {
-      console.log(payload)
       const filters = {
         id: true,
         description: true,
       };
-      if (Object.keys(filters).include(Object.keys(payload))) {
-        console.log('si existe');
-      }
+      Object.keys(filters).map(fil => {
+        console.log(fil.includes(Object.keys(payload)))
+      });
     }
     return await prisma.categories.findMany(query);
   } finally {
