@@ -26,27 +26,14 @@ async function getProducts(req, res) {
 
 function formatResponse(products) {
   return products.map(prod => {
-    const {
-      id: prod_id,
-      title: prod_title,
-      image: prod_image,
-      price: prod_price,
-      catetories,
-    } = prod;
-    const {
-      id: cat_id,
-      description: cat_description,
-    } = categories;
-    
+    const { id: prod_id, title: prod_title, image: prod_image, price: prod_price, categories } = prod;
+    const { description: cat_description } = categories;
     return {
       id: prod_id,
       name: prod_title.toLowerCase(),
       image: prod_image,
       price: prod_price,
-      category: {
-        id: cat_id,
-        name: cat_description,
-      },
+      category: cat_description,
     };
   });
 };

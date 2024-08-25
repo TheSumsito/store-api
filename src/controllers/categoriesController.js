@@ -26,11 +26,7 @@ async function getCategories(req, res) {
 
 function formatResponse(categories) {
   return categories.map(cat => {
-    const {
-      id: cat_id,
-      description: cat_name,
-    } = cat;
-    
+    const { id: cat_id, description: cat_name } = cat;
     return {
       id: cat_id,
       name: cat_name,
