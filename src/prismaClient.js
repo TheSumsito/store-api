@@ -1,6 +1,17 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+function filtersNotAvailables(fil) {
+  const { payload, filters } = fil;
+  let response = [];
+  filters.map(item => {
+    if (!item.includes(payload)) {
+      response.push(item);
+    }
+  });
+  return response;
+}
+
 async function fetchAssembled(payload={}) {
   try {
     const query = {
@@ -17,11 +28,16 @@ async function fetchAssembled(payload={}) {
         },
       },
     };
-    if (!Object.keys(query).length) delete query.where;
+    const filters = Object.keys(payload);
+    if (!filters.length) delete query.where;
     else {
       const availablesFilters = Object.keys({
         id: true,
       });
+      const filNotAvailables = filtersNotAvailables({
+        availablesFilters, filters,
+      });
+      filNotAvailables.map(fil => delete query.where[fil]);
     }
     return await prisma.assembled_computers.findMany(query);
   } finally {
@@ -34,13 +50,13 @@ async function fetchCategories(payload={}) {
     const query = {
       where: payload,
     };
-    if (!Object.keys(payload).length) delete query.where;
+    const filters = Object.keys(payload);
+    if (!filters.length) delete query.where;
     else {
       const availablesFilters = Object.keys({
         id: true,
         description: true,
       });
-      const filters = Object.keys(payload);
       availablesFilters.map(item => {
         if (!item.includes(filters)) {
           delete query.where[item];
@@ -61,10 +77,16 @@ async function fetchProducts(payload={}) {
         categories: true,
       },
     };
-    if (!Object.keys(payload).length) delete query.where;
+    const filters = Object.keys(payload);
+    if (!filters.length) delete query.where;
     else {
       const availablesFilters = Object.keys({
-        
+        id: true,
+      });
+      availablesFilters.map(item => {
+        if (!item.includes(filters)) {
+          delete query.where[item];
+        }
       });
     }
     return await prisma.products.findMany(query);
