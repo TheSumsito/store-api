@@ -18,6 +18,11 @@ async function fetchAssembled(payload={}) {
       },
     };
     if (!Object.keys(query).length) delete query.where;
+    else {
+      const availablesFilters = Object.keys({
+        id: true,
+      });
+    }
     return await prisma.assembled_computers.findMany(query);
   } finally {
     await prisma.$disconnect();
@@ -57,6 +62,11 @@ async function fetchProducts(payload={}) {
       },
     };
     if (!Object.keys(payload).length) delete query.where;
+    else {
+      const availablesFilters = Object.keys({
+        
+      });
+    }
     return await prisma.products.findMany(query);
   } finally {
     await prisma.$disconnect();
