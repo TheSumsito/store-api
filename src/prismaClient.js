@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-function filtersNotAvailables(fil) {
+function removeFilters(fil) {
   const { payload, filters } = fil;
   let response = [];
   filters.map(item => {
@@ -12,10 +12,10 @@ function filtersNotAvailables(fil) {
   return response;
 }
 
-async function fetchAssembled(payload={}) {
+async function fetchAssembled(params={}) {
   try {
     const query = {
-      where: payload,
+      where: params,
       include: {
         assembled_products: {
           include: {
@@ -28,14 +28,14 @@ async function fetchAssembled(payload={}) {
         },
       },
     };
-    const filters = Object.keys(payload);
-    if (!filters.length) delete query.where;
+    const payload = Object.keys(params);
+    if (!payload.length) delete query.where;
     else {
-      const availablesFilters = Object.keys({
+      const filters = Object.keys({
         id: true,
       });
-      const filNotAvailables = filtersNotAvailables({availablesFilters, filters});
-      filNotAvailables.map(fil => delete query.where[fil]);
+      this.removeFilters = removeFilters({payload, filters});
+      this.removeFilters.map(filter => delete query.where[filter]);
     }
     return await prisma.assembled_computers.findMany(query);
   } finally {
@@ -43,20 +43,20 @@ async function fetchAssembled(payload={}) {
   }
 };
 
-async function fetchCategories(payload={}) {
+async function fetchCategories(params={}) {
   try {
     const query = {
       where: payload,
     };
-    const filters = Object.keys(payload);
-    if (!filters.length) delete query.where;
+    const payload = Object.keys(params);
+    if (!payload.length) delete query.where;
     else {
-      const availablesFilters = Object.keys({
+      const filters = Object.keys({
         id: true,
         description: true,
       });
-      const filNotAvailables = filtersNotAvailables({availablesFilters, filters});
-      filNotAvailables.map(fil => delete query.where[fil]);
+      this.removeFilters = removeFilters({payload, filters});
+      this.removeFilters.map(filter => delete query.where[filter]);
     }
     return await prisma.categories.findMany(query);
   } finally {
@@ -64,7 +64,7 @@ async function fetchCategories(payload={}) {
   }
 };
 
-async function fetchProducts(payload={}) {
+async function fetchProducts(params={}) {
   try {
     const query = {
       where: payload,
@@ -72,16 +72,14 @@ async function fetchProducts(payload={}) {
         categories: true,
       },
     };
-    const filters = Object.keys(payload);
-    if (!filters.length) delete query.where;
+    const payload = Object.keys(params);
+    if (!payload.length) delete query.where;
     else {
-      const availablesFilters = Object.keys({
+      const filters = Object.keys({
         id: true,
       });
-      const filNotAvailables = filtersNotAvailables({
-        availablesFilters, filters
-      });
-      filNotAvailables.map(fil => delete query.where[fil]);
+      this.removeFilters = removeFilters({payload, filters});
+      this.removeFilters.map(filter => delete query.where[filter]);
     }
     return await prisma.products.findMany(query);
   } finally {
