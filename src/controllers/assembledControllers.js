@@ -3,20 +3,12 @@ const {
 } = require('../prismaClient');
 
 async function myAssembled(req, res) {
-  try {
-    const assembled = await fetchAssembled(req.body);
-    const { status, response } = assembled;
-    return res.status(status).send({
-      status: status,
-      response: formatResponse(response),
-    });
-  } catch (e) {
-    console.error(e);
-    return res.status(500).send({
-      status: 500,
-      message: 'Internal server error.',
-    });
-  }
+  const assembled = await fetchAssembled(req.body);
+  const { status, response } = assembled;
+  return res.status(status).send({
+    status: status,
+    response: formatResponse(response),
+  });
 };
 
 function formatResponse(assembled) {

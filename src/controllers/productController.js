@@ -3,20 +3,12 @@ const {
 } = require('../prismaClient');
 
 async function getProducts(req, res) {
-  try {
-    const products = await fetchProducts(req.body);
-    const { status, response } = products;
-    return res.status(status).send({
-      status: status,
-      response: formatResponse(response),
-    });
-  } catch (e) {
-    console.error(e);
-    return res.status(500).send({
-      status: 500,
-      message: 'Internal server error.',
-    });
-  }
+  const products = await fetchProducts(req.body);
+  const { status, response } = products;
+  return res.status(status).send({
+    status: status,
+    response: formatResponse(response),
+  });
 };
 
 function formatResponse(products) {

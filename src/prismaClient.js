@@ -46,6 +46,12 @@ async function fetchAssembled(params={}) {
       status: 200,
       response: await prisma.assembled_computers.findMany(query),
     };
+  } catch (e) {
+    console.error(e);
+    return {
+      status: 500,
+      response: 'Internal server error.',
+    };
   } finally {
     await prisma.$disconnect();
   }
@@ -74,6 +80,12 @@ async function fetchCategories(params={}) {
     return {
       status: 200,
       response: await prisma.categories.findMany(query),
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      status: 500,
+      response: 'Internal server error.',
     };
   } finally {
     await prisma.$disconnect();
@@ -105,6 +117,12 @@ async function fetchProducts(params={}) {
     return {
       status: 200,
       response: await prisma.products.findMany(query),
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      status: 500,
+      response: 'Internal server error.',
     };
   } finally {
     await prisma.$disconnect();
