@@ -1,14 +1,14 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-function removeFilters(fil) {
+function filtersError(fil) {
   const { payload, filters } = fil;
   let response = [];
-  filters.map(item => {
-    if (!item.includes(payload)) {
+  payload.map(item => {
+    if (!filters.includes(item)) {
       response.push(item);
     }
-  });
+  })
   return response;
 }
 
@@ -34,10 +34,18 @@ async function fetchAssembled(params={}) {
       const filters = Object.keys({
         id: true,
       });
-      this.removeFilters = removeFilters({payload, filters});
-      this.removeFilters.map(filter => delete query.where[filter]);
+      this.filtersError = filtersError({payload, filters});
+      if (this.filtersError.length) {
+        return {
+          status: 400,
+          response: 'Bad request',
+        };
+      }
     }
-    return await prisma.assembled_computers.findMany(query);
+    return {
+      status: 200,
+      response: await prisma.assembled_computers.findMany(query),
+    };
   } finally {
     await prisma.$disconnect();
   }
@@ -55,10 +63,18 @@ async function fetchCategories(params={}) {
         id: true,
         description: true,
       });
-      this.removeFilters = removeFilters({payload, filters});
-      this.removeFilters.map(filter => delete query.where[filter]);
+      this.filtersError = filtersError({payload, filters});
+      if (this.filtersError.length) {
+        return {
+          status: 400,
+          response: 'Bad request',
+        };
+      }
     }
-    return await prisma.categories.findMany(query);
+    return {
+      status: 200,
+      response: await prisma.categories.findMany(query),
+    };
   } finally {
     await prisma.$disconnect();
   }
@@ -78,10 +94,18 @@ async function fetchProducts(params={}) {
       const filters = Object.keys({
         id: true,
       });
-      this.removeFilters = removeFilters({payload, filters});
-      this.removeFilters.map(filter => delete query.where[filter]);
+      this.filtersError = filtersError({payload, filters});
+      if (this.filtersError.length) {
+        return {
+          status: 400,
+          response: 'Bad request',
+        };
+      }
     }
-    return await prisma.products.findMany(query);
+    return {
+      status: 200,
+      response: await prisma.products.findMany(query),
+    };
   } finally {
     await prisma.$disconnect();
   }
