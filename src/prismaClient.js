@@ -46,7 +46,7 @@ async function fetchAssembled(params={}) {
 async function fetchCategories(params={}) {
   try {
     const query = {
-      where: payload,
+      where: params,
     };
     const payload = Object.keys(params);
     if (!payload.length) delete query.where;
@@ -67,7 +67,7 @@ async function fetchCategories(params={}) {
 async function fetchProducts(params={}) {
   try {
     const query = {
-      where: payload,
+      where: params,
       include: {
         categories: true,
       },

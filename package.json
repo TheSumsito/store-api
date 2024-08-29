@@ -5,7 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/app.js"
+    "start": "nodemon src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +14,7 @@
     "@prisma/client": "^5.18.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "nodemon": "^3.1.4",
     "prisma": "^5.18.0"
   }
 }
