@@ -1,10 +1,10 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const {
-  HTTP_RESPONSE_200,
-  HTTP_RESPONSE_400,
-  HTTP_RESPONSE_404,
-  HTTP_RESPONSE_500,
+  HTTPS_RESPONSE_200,
+  HTTPS_RESPONSE_400,
+  HTTPS_RESPONSE_404,
+  HTTPS_RESPONSE_500,
 } = require('../assets/js/statusCode');
 const {
   qp_assembled,
@@ -26,16 +26,16 @@ async function fetchAssembled(params={}) {
       });
       this.filtersError = filtersError({payload, filters});
       if (this.filtersError.length) {
-        return HTTP_RESPONSE_400;
+        return HTTPS_RESPONSE_400;
       }
     }
     const assembled = await prisma.assembled_computers.findMany(queryParams);
     if (assembled.length) {
-      return { ...HTTP_RESPONSE_200, message: assembled };
-    } else return HTTP_RESPONSE_404;
+      return { ...HTTPS_RESPONSE_200, message: assembled };
+    } else return HTTPS_RESPONSE_404;
   } catch (e) {
     console.error(e);
-    return HTTP_RESPONSE_500;
+    return HTTPS_RESPONSE_500;
   } finally {
     await prisma.$disconnect();
   }
@@ -53,16 +53,16 @@ async function fetchCategories(params={}) {
       });
       this.filtersError = filtersError({payload, filters});
       if (this.filtersError.length) {
-        return HTTP_RESPONSE_400;
+        return HTTPS_RESPONSE_400;
       }
     }
     const categories = await prisma.categories.findMany(queryParams);
     if (categories.length) {
-      return { ...HTTP_RESPONSE_200, message: categories };
-    } else return HTTP_RESPONSE_404;
+      return { ...HTTPS_RESPONSE_200, message: categories };
+    } else return HTTPS_RESPONSE_404;
   } catch (e) {
     console.error(e);
-    return HTTP_RESPONSE_500;
+    return HTTPS_RESPONSE_500;
   } finally {
     await prisma.$disconnect();
   }
@@ -79,16 +79,16 @@ async function fetchProducts(params={}) {
       });
       this.filtersError = filtersError({payload, filters});
       if (this.filtersError.length) {
-        return HTTP_RESPONSE_400;
+        return HTTPS_RESPONSE_400;
       }
     }
     const products = await prisma.products.findMany(queryParams);
     if (products.length) {
-      return { ...HTTP_RESPONSE_200, message: products };
-    } else return HTTP_RESPONSE_404;
+      return { ...HTTPS_RESPONSE_200, message: products };
+    } else return HTTPS_RESPONSE_404;
   } catch (e) {
     console.error(e);
-    return HTTP_RESPONSE_500;
+    return HTTPS_RESPONSE_500;
   } finally {
     await prisma.$disconnect();
   }
