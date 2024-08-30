@@ -28,5 +28,5 @@ function formatResponse(products) {
 };
 
 module.exports = {
-  getProducts
+  getProducts,
 };
