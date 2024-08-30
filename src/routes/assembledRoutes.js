@@ -1,7 +1,9 @@
 const express = require('express');
-const { myAssembled } = require('../controllers/assembledControllers');
+const { 
+  getAssembled,
+} = require('../controllers/assembledControllers');
 
 const router = express.Router();
-router.post('/', myAssembled);
+router.post('/', getAssembled);
 
 module.exports = router;
