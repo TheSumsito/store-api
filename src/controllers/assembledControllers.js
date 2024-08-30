@@ -2,7 +2,7 @@ const {
   fetchAssembled,
 } = require('../prismaClient');
 
-async function myAssembled(req, res) {
+async function getAssembled(req, res) {
   const { status, message } = await fetchAssembled(req.body);
   return res.status(status).send({
     status: status,
@@ -35,5 +35,5 @@ function formatResponse(assembled) {
 }
 
 module.exports = {
-  myAssembled,
+  getAssembled,
 };
