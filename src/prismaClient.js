@@ -30,7 +30,9 @@ async function fetchAssembled(params={}) {
       }
     }
     const assembled = await prisma.assembled_computers.findMany(queryParams);
-    return { ...HTTP_RESPONSE_200, message: assembled };
+    if (assembled.length) {
+      return { ...HTTP_RESPONSE_200, message: assembled };
+    } else return HTTP_RESPONSE_404;
   } catch (e) {
     console.error(e);
     return HTTP_RESPONSE_500;
@@ -55,7 +57,9 @@ async function fetchCategories(params={}) {
       }
     }
     const categories = await prisma.categories.findMany(queryParams);
-    return { ...HTTP_RESPONSE_200, message: categories };
+    if (categories.length) {
+      return { ...HTTP_RESPONSE_200, message: categories };
+    } else return HTTP_RESPONSE_404;
   } catch (e) {
     console.error(e);
     return HTTP_RESPONSE_500;
@@ -79,7 +83,9 @@ async function fetchProducts(params={}) {
       }
     }
     const products = await prisma.products.findMany(queryParams);
-    return { ...HTTP_RESPONSE_200, message: products };
+    if (products.length) {
+      return { ...HTTP_RESPONSE_200, message: products };
+    } else return HTTP_RESPONSE_404;
   } catch (e) {
     console.error(e);
     return HTTP_RESPONSE_500;
