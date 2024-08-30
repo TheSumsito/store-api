@@ -1,6 +1,6 @@
 const {
   fetchCategories,
-} = require('../prismaClient');
+} = require('@client');
 
 async function getCategories(req, res) {
   const { status, message } = await fetchCategories(req.body);

@@ -1,7 +1,7 @@
 const express = require('express');
-const { 
+const {
   getCategories,
-} = require('../controllers/categoriesController');
+} = require('@controllers/categoriesController');
 
 const router = express.Router();
 router.post('/', getCategories);

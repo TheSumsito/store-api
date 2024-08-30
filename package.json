@@ -14,7 +14,16 @@
     "@prisma/client": "^5.18.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "module-alias": "^2.2.3",
     "nodemon": "^3.1.4",
     "prisma": "^5.18.0"
+  },
+  "_moduleAliases": {
+    "@controllers": "src/controllers",
+    "@routes": "src/routes",
+    "@client": "src/prismaClient.js",
+    "@querys": "src/prismaQuery.js",
+    "@status": "assets/js/status.js",
+    "@functions": "assets/js/functions.js"
   }
 }

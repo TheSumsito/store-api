@@ -5,15 +5,15 @@ const {
   HTTPS_RESPONSE_400,
   HTTPS_RESPONSE_404,
   HTTPS_RESPONSE_500,
-} = require('../assets/js/statusCode');
+} = require('@status');
 const {
   qp_assembled,
   qp_categories,
   qp_products,
-} = require('./prismaQuery');
+} = require('@querys');
 const {
   filtersError,
-} = require('../assets/js/functions');
+} = require('@functions');
 
 async function fetchAssembled(params={}) {
   try {

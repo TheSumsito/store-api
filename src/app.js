@@ -1,7 +1,8 @@
+require('module-alias/register');
 const express = require('express');
-const router = require('./routes/productRoutes');
-const categories = require('./routes/categoriesRoutes');
-const assembly = require('./routes/assembledRoutes');
+const router = require('@routes/productRoutes');
+const categories = require('@routes/categoriesRoutes');
+const assembly = require('@routes/assembledRoutes');
 
 const app = express();
 const port = 3000;

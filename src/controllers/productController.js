@@ -1,6 +1,6 @@
 const {
   fetchProducts,
-} = require('../prismaClient');
+} = require('@client');
 
 async function getProducts(req, res) {
   const { status, message } = await fetchProducts(req.body);

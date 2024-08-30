@@ -1,6 +1,6 @@
 const {
   fetchAssembled,
-} = require('../prismaClient');
+} = require('@client');
 
 async function getAssembled(req, res) {
   const { status, message } = await fetchAssembled(req.body);

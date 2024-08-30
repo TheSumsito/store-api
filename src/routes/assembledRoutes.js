@@ -1,7 +1,7 @@
 const express = require('express');
-const { 
+const {
   getAssembled,
-} = require('../controllers/assembledControllers');
+} = require('@controllers/assembledControllers');
 
 const router = express.Router();
 router.post('/', getAssembled);
