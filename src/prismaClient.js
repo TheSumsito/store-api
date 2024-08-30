@@ -1,57 +1,38 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-
-function filtersError(fil) {
-  const { payload, filters } = fil;
-  let response = [];
-  payload.map(item => {
-    if (!filters.includes(item)) {
-      response.push(item);
-    }
-  })
-  return response;
-}
+const {
+  HTTP_RESPONSE_200,
+  HTTP_RESPONSE_400,
+  HTTP_RESPONSE_500,
+} = require('../assets/js/variables');
+const {
+  qp_assembled,
+  qp_categories,
+  qp_products,
+} = require('./prismaQuery');
+const {
+  filtersError,
+} = require('../assets/js/functions');
 
 async function fetchAssembled(params={}) {
   try {
-    const query = {
-      where: params,
-      include: {
-        assembled_products: {
-          include: {
-            products: {
-              include: {
-                categories: true,
-              },
-            },
-          },
-        },
-      },
-    };
+    const queryParams = qp_assembled(params);
     const payload = Object.keys(params);
-    if (!payload.length) delete query.where;
+    if (!payload.length) delete queryParams.where;
     else {
       const filters = Object.keys({
         id: true,
       });
       this.filtersError = filtersError({payload, filters});
       if (this.filtersError.length) {
-        return {
-          status: 400,
-          response: 'Bad request',
-        };
+        return HTTP_RESPONSE_400;
       }
     }
-    return {
-      status: 200,
-      response: await prisma.assembled_computers.findMany(query),
-    };
+    const assembled = await prisma.assembled_computers.findMany(queryParams);
+    return { ...HTTP_RESPONSE_200, message: assembled };
   } catch (e) {
     console.error(e);
-    return {
-      status: 500,
-      response: 'Internal server error.',
-    };
+    return HTTP_RESPONSE_500;
   } finally {
     await prisma.$disconnect();
   }
@@ -59,11 +40,9 @@ async function fetchAssembled(params={}) {
 
 async function fetchCategories(params={}) {
   try {
-    const query = {
-      where: params,
-    };
+    const queryParams = qp_categories(params);
     const payload = Object.keys(params);
-    if (!payload.length) delete query.where;
+    if (!payload.length) delete queryParams.where;
     else {
       const filters = Object.keys({
         id: true,
@@ -71,22 +50,14 @@ async function fetchCategories(params={}) {
       });
       this.filtersError = filtersError({payload, filters});
       if (this.filtersError.length) {
-        return {
-          status: 400,
-          response: 'Bad request',
-        };
+        return HTTP_RESPONSE_400;
       }
     }
-    return {
-      status: 200,
-      response: await prisma.categories.findMany(query),
-    };
+    const categories = await prisma.categories.findMany(queryParams);
+    return { ...HTTP_RESPONSE_200, message: categories };
   } catch (e) {
     console.error(e);
-    return {
-      status: 500,
-      response: 'Internal server error.',
-    };
+    return HTTP_RESPONSE_500;
   } finally {
     await prisma.$disconnect();
   }
@@ -94,36 +65,23 @@ async function fetchCategories(params={}) {
 
 async function fetchProducts(params={}) {
   try {
-    const query = {
-      where: params,
-      include: {
-        categories: true,
-      },
-    };
+    const queryParams = qp_products(params);
     const payload = Object.keys(params);
-    if (!payload.length) delete query.where;
+    if (!payload.length) delete queryParams.where;
     else {
       const filters = Object.keys({
         id: true,
       });
       this.filtersError = filtersError({payload, filters});
       if (this.filtersError.length) {
-        return {
-          status: 400,
-          response: 'Bad request',
-        };
+        return HTTP_RESPONSE_400;
       }
     }
-    return {
-      status: 200,
-      response: await prisma.products.findMany(query),
-    };
+    const products = await prisma.products.findMany(queryParams);
+    return { ...HTTP_RESPONSE_200, message: products };
   } catch (e) {
     console.error(e);
-    return {
-      status: 500,
-      response: 'Internal server error.',
-    };
+    return HTTP_RESPONSE_500;
   } finally {
     await prisma.$disconnect();
   }

@@ -3,11 +3,10 @@ const {
 } = require('../prismaClient');
 
 async function myAssembled(req, res) {
-  const assembled = await fetchAssembled(req.body);
-  const { status, response } = assembled;
+  const { status, message } = await fetchAssembled(req.body);
   return res.status(status).send({
     status: status,
-    response: formatResponse(response),
+    response: formatResponse(message),
   });
 };
 

@@ -3,11 +3,10 @@ const {
 } = require('../prismaClient');
 
 async function getProducts(req, res) {
-  const products = await fetchProducts(req.body);
-  const { status, response } = products;
+  const { status, message } = await fetchProducts(req.body);
   return res.status(status).send({
     status: status,
-    response: formatResponse(response),
+    response: formatResponse(message),
   });
 };
 
