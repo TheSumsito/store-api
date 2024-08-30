@@ -3,8 +3,9 @@ const prisma = new PrismaClient();
 const {
   HTTP_RESPONSE_200,
   HTTP_RESPONSE_400,
+  HTTP_RESPONSE_404,
   HTTP_RESPONSE_500,
-} = require('../assets/js/variables');
+} = require('../assets/js/statusCode');
 const {
   qp_assembled,
   qp_categories,
