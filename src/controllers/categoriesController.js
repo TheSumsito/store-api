@@ -1,5 +1,6 @@
 const {
   fetchCategories,
+  createdCategory,
 } = require('@client');
 
 async function getCategories(req, res) {
@@ -9,6 +10,13 @@ async function getCategories(req, res) {
     response: formatResponse(message),
   });
 };
+async function newCategory(req, res) {
+  const { status, message } = await createdCategory(req.body);
+  return res.status(status).send({
+    status: status,
+    response: message,
+  });
+}
 
 function formatResponse(categories) {
   if (typeof categories === 'string') return categories;
@@ -25,4 +33,5 @@ function formatResponse(categories) {
 
 module.exports = {
   getCategories,
+  newCategory,
 };

@@ -1,6 +1,6 @@
-function filtersError({payload, filters}) {
+function filtersError({params, filters}) {
   let response = [];
-  payload.map(item => {
+  Object.keys(params).map(item => {
     if (!filters.includes(item)) {
       response.push(item);
     }

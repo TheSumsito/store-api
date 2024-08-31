@@ -30,8 +30,16 @@ function qp_products(params) {
   };
 };
 
+function qp_created_category(params) {
+  console.log(params)
+  return {
+    data: params,
+  };
+};
+
 module.exports = {
   qp_assembled,
   qp_categories,
   qp_products,
+  qp_created_category,
 };

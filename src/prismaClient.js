@@ -2,14 +2,17 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const {
   HTTPS_RESPONSE_200,
+  HTTPS_RESPONSE_201,
   HTTPS_RESPONSE_400,
   HTTPS_RESPONSE_404,
+  HTTPS_RESPONSE_422,
   HTTPS_RESPONSE_500,
 } = require('@status');
 const {
   qp_assembled,
   qp_categories,
   qp_products,
+  qp_created_category,
 } = require('@querys');
 const {
   filtersError,
@@ -18,13 +21,10 @@ const {
 async function fetchAssembled(params={}) {
   try {
     const queryParams = qp_assembled(params);
-    const payload = Object.keys(params);
-    if (!payload.length) delete queryParams.where;
+    if (!Object.keys(params).length) delete queryParams.where;
     else {
-      const filters = Object.keys({
-        id: true,
-      });
-      this.filtersError = filtersError({payload, filters});
+      const filters = ['id'];
+      this.filtersError = filtersError({params, filters});
       if (this.filtersError.length) {
         return HTTPS_RESPONSE_400;
       }
@@ -44,14 +44,10 @@ async function fetchAssembled(params={}) {
 async function fetchCategories(params={}) {
   try {
     const queryParams = qp_categories(params);
-    const payload = Object.keys(params);
-    if (!payload.length) delete queryParams.where;
+    if (!Object.keys(params).length) delete queryParams.where;
     else {
-      const filters = Object.keys({
-        id: true,
-        description: true,
-      });
-      this.filtersError = filtersError({payload, filters});
+      const filters = ['id', 'description'];
+      this.filtersError = filtersError({params, filters});
       if (this.filtersError.length) {
         return HTTPS_RESPONSE_400;
       }
@@ -71,13 +67,10 @@ async function fetchCategories(params={}) {
 async function fetchProducts(params={}) {
   try {
     const queryParams = qp_products(params);
-    const payload = Object.keys(params);
-    if (!payload.length) delete queryParams.where;
+    if (!Object.keys(params).length) delete queryParams.where;
     else {
-      const filters = Object.keys({
-        id: true,
-      });
-      this.filtersError = filtersError({payload, filters});
+      const filters = ['id'];
+      this.filtersError = filtersError({params, filters});
       if (this.filtersError.length) {
         return HTTPS_RESPONSE_400;
       }
@@ -94,8 +87,31 @@ async function fetchProducts(params={}) {
   }
 };
 
+async function createdCategory(params={}) {
+  try {
+    if (!Object.keys(params).length) return HTTPS_RESPONSE_422;
+    
+    const filters = ['description'];
+    const queryParams = qp_created_category(params);
+    this.filtersError = filtersError({params, filters});
+    if (this.filtersError.length) return HTTPS_RESPONSE_400;
+
+    const {id, description} = await prisma.categories.create(queryParams);
+    return {...HTTPS_RESPONSE_201, message: {
+      id: id,
+      description: description,
+    }};
+  } catch (e) {
+    console.error(e);
+    return HTTPS_RESPONSE_500;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 module.exports = {
   fetchAssembled,
   fetchCategories,
   fetchProducts,
+  createdCategory,
 };
