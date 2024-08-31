@@ -14,13 +14,11 @@ function qp_assembled(params) {
     },
   };
 };
-
 function qp_categories(params) {
   return {
     where: params,
   };
 };
-
 function qp_products(params) {
   return {
     where: params,
@@ -29,14 +27,17 @@ function qp_products(params) {
     },
   };
 };
-
 function qp_created_category(params) {
   return {
     data: params,
   };
 };
-
 function qp_created_product(params) {
+  return {
+    data: params,
+  };
+};
+function qp_created_assembly(params) {
   return {
     data: params,
   };
@@ -48,4 +49,5 @@ module.exports = {
   qp_products,
   qp_created_category,
   qp_created_product,
+  qp_created_assembly,
 };

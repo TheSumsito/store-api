@@ -14,6 +14,7 @@ const {
   qp_products,
   qp_created_category,
   qp_created_product,
+  qp_created_assembly,
 } = require('@querys');
 const {
   filtersError,
@@ -135,10 +136,33 @@ async function createdProduct(params={}) {
   }
 }
 
+async function createdAssembly(params={}) {
+  try {
+    if (!Object.keys(params).length) return HTTPS_RESPONSE_422;
+    const queryParams = qp_created_assembly(params);
+
+    const filters = ['user_id', 'description'];
+    this.filtersError = filtersError({params, filters});
+    if (this.filtersError.length) return HTTPS_RESPONSE_400;
+
+    const {id, description} = await prisma.assembled_computers.create(queryParams);
+    return {...HTTPS_RESPONSE_201, message: {
+      id: id,
+      description: description,
+    }};
+  } catch (e) {
+    console.error(e);
+    return HTTPS_RESPONSE_500;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 module.exports = {
   fetchAssembled,
   fetchCategories,
   fetchProducts,
   createdCategory,
   createdProduct,
+  createdAssembly,
 };

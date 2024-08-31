@@ -1,5 +1,6 @@
 const {
   fetchAssembled,
+  createdAssembly,
 } = require('@client');
 
 async function getAssembled(req, res) {
@@ -9,6 +10,13 @@ async function getAssembled(req, res) {
     response: formatResponse(message),
   });
 };
+async function newAssembly(req, res) {
+  const { status, message } = await createdAssembly(req.body);
+  return res.status(status).send({
+    status: status,
+    response: message,
+  });
+}
 
 function formatResponse(assembled) {
   if (typeof assembled === 'string') return assembled;
@@ -36,4 +44,5 @@ function formatResponse(assembled) {
 
 module.exports = {
   getAssembled,
+  newAssembly,
 };
