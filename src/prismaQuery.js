@@ -42,6 +42,11 @@ function qp_created_assembly(params) {
     data: params,
   };
 };
+function qp_assign_product_assembly(params) {
+  return {
+    data: params,
+  };
+};
 
 module.exports = {
   qp_assembled,
@@ -50,4 +55,5 @@ module.exports = {
   qp_created_category,
   qp_created_product,
   qp_created_assembly,
+  qp_assign_product_assembly,
 };

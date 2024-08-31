@@ -1,6 +1,7 @@
 const {
   fetchAssembled,
   createdAssembly,
+  assignProductAssembly,
 } = require('@client');
 
 async function getAssembled(req, res) {
@@ -12,6 +13,13 @@ async function getAssembled(req, res) {
 };
 async function newAssembly(req, res) {
   const { status, message } = await createdAssembly(req.body);
+  return res.status(status).send({
+    status: status,
+    response: message,
+  });
+}
+async function assignProduct(req, res) {
+  const { status, message } = await assignProductAssembly(req.body);
   return res.status(status).send({
     status: status,
     response: message,
@@ -45,4 +53,5 @@ function formatResponse(assembled) {
 module.exports = {
   getAssembled,
   newAssembly,
+  assignProduct,
 };
