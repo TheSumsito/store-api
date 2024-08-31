@@ -1,5 +1,6 @@
 const {
   fetchProducts,
+  createdProduct,
 } = require('@client');
 
 async function getProducts(req, res) {
@@ -9,6 +10,13 @@ async function getProducts(req, res) {
     response: formatResponse(message),
   });
 };
+async function newProduct(req, res) {
+  const { status, message } = await createdProduct(req.body);
+  return res.status(status).send({
+    status: status,
+    response: message,
+  });
+}
 
 function formatResponse(products) {
   if (typeof products === 'string') return products;
@@ -29,4 +37,5 @@ function formatResponse(products) {
 
 module.exports = {
   getProducts,
+  newProduct,
 };

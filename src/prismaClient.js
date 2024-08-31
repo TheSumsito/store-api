@@ -13,6 +13,7 @@ const {
   qp_categories,
   qp_products,
   qp_created_category,
+  qp_created_product,
 } = require('@querys');
 const {
   filtersError,
@@ -90,9 +91,9 @@ async function fetchProducts(params={}) {
 async function createdCategory(params={}) {
   try {
     if (!Object.keys(params).length) return HTTPS_RESPONSE_422;
-    
-    const filters = ['description'];
     const queryParams = qp_created_category(params);
+
+    const filters = ['description'];
     this.filtersError = filtersError({params, filters});
     if (this.filtersError.length) return HTTPS_RESPONSE_400;
 
@@ -109,9 +110,35 @@ async function createdCategory(params={}) {
   }
 }
 
+async function createdProduct(params={}) {
+  try {
+    if (!Object.keys(params).length) return HTTPS_RESPONSE_422;
+    const queryParams = qp_created_product(params);
+
+    const filters = ['title', 'image', 'categories_id', 'price'];
+    this.filtersError = filtersError({params, filters});
+    if (this.filtersError.length) return HTTPS_RESPONSE_400;
+
+    const {id, title, image, categories_id, price} = await prisma.products.create(queryParams);
+    return {...HTTPS_RESPONSE_201, message: {
+      id: id,
+      title: title,
+      image: image,
+      categories_id: categories_id,
+      price: price,
+    }};
+  } catch (e) {
+    console.error(e);
+    return HTTPS_RESPONSE_500;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 module.exports = {
   fetchAssembled,
   fetchCategories,
   fetchProducts,
   createdCategory,
+  createdProduct,
 };

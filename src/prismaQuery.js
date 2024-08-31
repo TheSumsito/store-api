@@ -31,7 +31,12 @@ function qp_products(params) {
 };
 
 function qp_created_category(params) {
-  console.log(params)
+  return {
+    data: params,
+  };
+};
+
+function qp_created_product(params) {
   return {
     data: params,
   };
@@ -42,4 +47,5 @@ module.exports = {
   qp_categories,
   qp_products,
   qp_created_category,
+  qp_created_product,
 };
