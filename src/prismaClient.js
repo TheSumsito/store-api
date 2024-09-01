@@ -174,14 +174,8 @@ async function assignProductAssembly(params={}) {
 
     return {...HTTPS_RESPONSE_201, message: {
       id: id,
-      assembled: {
-        id: assembly[0].id,
-        description: assembly[0].description,
-      },
-      product: {
-        id: product[0].id,
-        title: product[0].title,
-      },
+      assembled: assembly,
+      product: product,
     }};
   } catch (e) {
     console.error(e);
