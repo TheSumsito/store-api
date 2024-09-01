@@ -169,10 +169,19 @@ async function assignProductAssembly(params={}) {
     if (this.filtersError.length) return HTTPS_RESPONSE_400;
 
     const {id, product_id, assembled_id} = await prisma.assembled_products.create(queryParams);
+    const { message: product } = await fetchProducts({id: product_id});
+    const { message: assembly } = await fetchAssembled({id: assembled_id});
+
     return {...HTTPS_RESPONSE_201, message: {
       id: id,
-      product_id: product_id,
-      assembled_id: assembled_id,
+      assembled: {
+        id: assembly[0].id,
+        description: assembly[0].description,
+      },
+      product: {
+        id: product[0].id,
+        title: product[0].title,
+      },
     }};
   } catch (e) {
     console.error(e);
